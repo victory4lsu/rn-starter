@@ -7,17 +7,19 @@ const Exercise18Screen = () => {
     return (
         <View>
             <Text style={styles.headerText}>Getting started with React native!</Text>
-            <Text style={styles.nameText}>My name is {userName}</Text> 
+            <Text style={styles.subHeaderStyle}>My name is {userName}</Text> 
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     headerText: {
-        fontSize: 45
+        fontSize: 45,
+        color: 'red'
     },
-    nameText: {
-        fontSize: 20
+    subHeaderStyle: {
+        fontSize: 20,
+        color: 'blue'
     }
 });
 
