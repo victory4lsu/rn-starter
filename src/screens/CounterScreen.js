@@ -31,14 +31,14 @@ const CounterScreen = () => {
 };
 
 const styles = StyleSheet.create({
-counterTitle: {
-    width: '100%',
-    fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center',
-    backgroundColor: 'blue',
-    color: 'white'
-}
+    counterTitle: {
+        width: '100%',
+        fontSize: 20,
+        fontWeight: '600',
+        textAlign: 'center',
+        backgroundColor: 'blue',
+        color: 'white'
+    }
 });
 
 export default CounterScreen;
