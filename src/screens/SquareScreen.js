@@ -1,74 +1,56 @@
-import React, {useState} from 'react';
+import React, {useReducer} from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
 import ColorCounter from '../components/ColorCounter';
 
-const SquareScreen = () => {
-    const [red,   setRed]   = useState(0);
-    const [green, setGreen] = useState(0);
-    const [blue,  setBlue]  = useState(0);
-    let COLOR_INCREMENT = 15;
+const COLOR_INCREMENT = 15;
+
+const reducer = (state, action) => {
+    //state: === {red: number, green: number, blue: number}
+    //action === {type: 'change_red'||'change_green'||'change_blue', payload: 15||-15}
     
-    const setColor = (color, change) => {
-        //color === 'red', 'green', 'blue'
-        //change === COLOR_INCREMENT, (-1 * COLOR_INCREMENT)
-        
-        switch (color)
-        {
-            case 'red':
-            {
-                let postChange = red + change;
-                (postChange > 255 || postChange < 0)
-                    ? null
-                    : setRed(postChange);
-
-                return;
-            }
-            case 'green':
-            {
-                let postChange = green + change;
-                (postChange > 255 || postChange < 0)
-                    ? null
-                    : setGreen(postChange);
-
-                return;
-            }
-            case 'blue':
-            {
-                let postChange = blue + change;
-                (postChange > 255 || postChange < 0)
-                    ? null
-                    : setBlue(postChange);
-
-                return;
-            }
-            default: 
-                return;
-        }
-
+    let actionType = action.type;
+    let amount = action.payload;
+    
+    switch (actionType)
+    {
+        case 'change_red':
+            return state.red + amount > 255 || state.red + amount < 0
+                ? state
+                : {...state, red: state.red + amount};
+        case 'change_green':
+            return state.green + amount > 255 || state.green + amount < 0
+                ? state
+                : {...state, green: state.green + amount};
+        case 'change_blue':
+            return state.blue + amount > 255 || state.blue + amount < 0
+                ? state
+                : {...state, blue: state.blue + amount};
+        default:
+            return state;
     }
+};
+
+const SquareScreen = () => {
+    const [state, dispatch] = useReducer(reducer, {red: 0, green: 0, blue: 0});
+    const {red, green, blue} = state;
 
     return (
         <View>
-            <Button title='Reset' onPress={()=>{
-                setRed(0);
-                setGreen(0);
-                setBlue(0);
-            }}/>
             <ColorCounter 
-                onIncrease={() => setColor('red', COLOR_INCREMENT)}
-                onDecrease={() => setColor('red', -1 * COLOR_INCREMENT)}
+                onIncrease={() => dispatch({type: 'change_red', payload: COLOR_INCREMENT})}
+                onDecrease={() => dispatch({type: 'change_red', payload: -1 * COLOR_INCREMENT})}
                 color='Red'   
-                colorValue={red}/>
+                colorValue={state.red}/>
             <ColorCounter 
-                onIncrease={() => setColor('green', COLOR_INCREMENT)}
-                onDecrease={() => setColor('green', -1 * COLOR_INCREMENT)}
+                onIncrease={() => dispatch({type: 'change_green', payload: COLOR_INCREMENT})}
+                onDecrease={() => dispatch({type: 'change_green', payload: COLOR_INCREMENT})}
                 color='Green'
-                colorValue={green} />
+                colorValue={state.green} />
             <ColorCounter 
-                onIncrease={() => setColor('blue', COLOR_INCREMENT)}
-                onDecrease={() => setColor('blue', -1 * COLOR_INCREMENT)}
+                onIncrease={() => dispatch({type: 'change_blue', payload: COLOR_INCREMENT})}
+                onDecrease={() => dispatch({type: 'change_blue', payload: COLOR_INCREMENT})}
                 color='Blue'
-                colorValue={blue}  />
+                colorValue={state.blue}  />
             <View style={{
                 height: 150, 
                 width: 150, 
